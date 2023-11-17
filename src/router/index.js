@@ -4,6 +4,13 @@ import rooms from '../views/RoomsView.vue'
 import aminities from '../views/AminitiesView.vue'
 import aboutus from '../views/AboutUsView.vue'
 import AdminView from '../views/AdminView.vue'
+import RoomView from '../views/RoomView.vue'
+import AdminAmenitiesView from '../views/AdminAmenitiesView.vue'
+import PaymentView from '../views/PaymentView.vue'
+import InventoryView from '../views/InventoryView.vue'
+
+
+
 
 
 const routes = [
@@ -30,6 +37,22 @@ const routes = [
   {
     path: '/admin',
     component: AdminView
+  },
+  {
+    path: '/roomview',
+    component: RoomView
+  },
+  {
+    path: '/amenities',
+    component: AdminAmenitiesView
+  },
+  {
+    path: '/payment',
+    component: PaymentView
+  },
+  {
+    path: '/inventory',
+    component: InventoryView
   },
 
 
