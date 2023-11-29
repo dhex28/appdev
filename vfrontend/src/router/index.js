@@ -9,6 +9,9 @@ import LoginView from '../views/LoginView.vue'
 import MainView from '../views/MainView.vue'
 import RoomView from '../views/RoomView.vue'
 import Amenitiesadmin from '../views/Amenitiesadmin.vue'
+import Dashboard from '../views/Dashboard.vue'
+import InventoryAdmin from '../views/InventoryAdmin.vue'
+import CategoriesAdmin from '../views/CategoriesAdmin.vue'
 
 
 // import Sidebar from '../views/Sidebar.vue'
@@ -78,7 +81,19 @@ const routes = [
     component: Amenitiesadmin
   },
 
+  {
+    path: '/dashboard',
+    component: Dashboard
+  },
+  {
+    path: '/inventory',
+    component: InventoryAdmin
+  },
   
+{
+  path: '/categories',
+  component: CategoriesAdmin
+},
 
   // ... other routes
   // {

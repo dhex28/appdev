@@ -2,9 +2,9 @@
         <header>
             <div class="header-container">
             <nav class="header-nav-bar">
-                    <div class="header-nav-logo">
-                        <a href="index.html">
-                            <img :src="require('@/assets/img/logo.png')"  alt="Logo">
+                    <div class="nav-logo">
+                        <a href="/home">
+                            <img :src="require('@/assets/img/veronicalogo.png')"  alt="Logo">
                             
                                 <div class="logout-modal" v-if="isLogoutModalOpen">
                         <div class="modal-content">
@@ -69,7 +69,7 @@
     };
     </script>
     
-    <style>
+    <!-- <style>
     /* <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="./assets/css/global-header.css">
         <link rel="stylesheet" href="./assets/css/global-footer.css">
@@ -110,5 +110,140 @@
 }
 
     
-    </style>
-    
+    </style> -->
+
+    <style>
+    /* Importing Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+    /* Styling for the header navigation bar */
+    header {
+        font-family: 'Montserrat', sans-serif;
+        background-color: #ffffff; /* White background color */
+        color: #333; /* Dark text color */
+        padding: 10px 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+        border: 1px solid #ddd; /* Border around the entire navbar */
+        border-radius: 8px; /* Rounded corners */
+    }
+
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .nav-logo {
+        width: 150px;
+    }
+
+    .nav-logo img {
+        max-height: 50px;
+        max-width: 100%;
+    }
+
+    .header-nav-bar {
+        display: flex;
+        align-items: center;
+    }
+
+    .header-nav-lists {
+        list-style-type: none;
+        display: flex;
+        margin: 0;
+        padding: 0;
+        margin-left: auto; /* Move the navigation links to the left on smaller screens */
+    }
+
+    .header-nav-list {
+        margin-right: 20px;
+    }
+
+    .header-nav-link {
+        color: #333; /* Dark text color */
+        text-decoration: none;
+        padding: 10px;
+        transition: color 0.3s ease-in-out;
+    }
+
+    .header-nav-link:hover {
+        color: #ffd700; /* Gold color on hover */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .header-nav-link.active {
+        color: #ffd700 !important; /* Gold color for active link */
+    }
+
+    .header-hamburger-icon {
+        cursor: pointer;
+        display: none; /* Hide the hamburger icon by default on larger screens */
+        color: #333; /* Dark text color */
+        font-size: 20px;
+    }
+
+    @media (max-width: 768px) {
+        /* Show the hamburger icon on smaller screens */
+        .header-hamburger-icon {
+            display: block;
+        }
+
+        /* Hide the regular navigation links on smaller screens */
+        .header-nav-lists {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 60px; /* Adjust the top position based on your design */
+            left: 20px; /* Adjust the left position based on your design */
+            background-color: #ffffff; /* White background color */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 4px; /* Rounded corners */
+            z-index: 1;
+        }
+
+        .header-nav-list {
+            margin-right: 0;
+        }
+
+        .header-nav-link {
+            color: #333; /* Dark text color for mobile menu */
+            margin-bottom: 10px; /* Adjust the margin between mobile links */
+        }
+
+        .header-nav-link:hover {
+            color: #ffd700; /* Gold color on hover for mobile menu */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-nav-link.active {
+            color: #ffd700 !important; /* Gold color for active link in mobile menu */
+        }
+
+        .header-nav-bar.show {
+            flex-direction: column;
+        }
+        @media (max-width: 768px) {
+    .header-nav-lists {
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        background-color: #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+        z-index: 1;
+        display: none;
+    }
+
+    .header-nav-lists.show {
+        display: flex;
+        flex-direction: column;
+    }
+}
+    }
+
+    /* Add more styles as needed for other elements */
+</style>
+
+
+

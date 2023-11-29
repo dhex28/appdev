@@ -42,11 +42,11 @@ body {
 	color: #d4af37;
 }
 
-.header-nav-logo {
-	width: 80px;
+/* .header-nav-logo {
+	width: 200px;
 	position: relative;
-	z-index: 11;
-}
+	z-index: 20;
+} */
 
 /**Hamburger ICON **/
 .header-hamburger-icon {

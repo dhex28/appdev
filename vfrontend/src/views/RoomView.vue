@@ -48,19 +48,19 @@
                   <span>
                     <i class="ti ti-alert-circle"></i>
                   </span>
-                  <span class="hide-menu">Amenities Reservation</span>
+                  <span class="hide-menu">Amenities</span>
                 </a>
               </li>
               <li class="sidebar-item">
-                <a class="sidebar-link" href="./ui-card.html" aria-expanded="false">
+                <a class="sidebar-link" href="/categories" aria-expanded="false">
                   <span>
                     <i class="ti ti-cards"></i>
                   </span>
-                  <span class="hide-menu">Payment</span>
+                  <span class="hide-menu">Categories</span>
                 </a>
               </li>
               <li class="sidebar-item">
-                <a class="sidebar-link" href="./ui-forms.html" aria-expanded="false">
+                <a class="sidebar-link" href="/inventory" aria-expanded="false">
                   <span>
                     <i class="ti ti-file-description"></i>
                   </span>
@@ -79,14 +79,15 @@
                 <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                 <span class="hide-menu">AUTH</span>
               </li>
+              <!-- Inside the Sidebar navigation -->
               <li class="sidebar-item">
-                <a class="sidebar-link" href="./authentication-login.html" aria-expanded="false">
-                  <span>
-                    <i class="ti ti-login"></i>
-                  </span>
-                  <span class="hide-menu">Logout</span>
-                </a>
-              </li>
+              <a class="sidebar-link" href="#" id="logoutButton">
+              <span>
+            <i class="ti ti-login"></i>
+          </span>
+      <span class="hide-menu">Logout</span>
+    </a>
+</li>
             </ul>
           </nav>
           <!-- End Sidebar navigation -->
@@ -115,6 +116,8 @@
           </nav>
         </header>
 
+        
+
         <div class="container-fluid"></div>
         <div class="color-container">
           <roominsert @refreshData="refreshData" />
@@ -138,7 +141,7 @@
               <td>{{ room.num_bed }}</td>
               <td v-if="room.room_image">
 
-                <img :src="room.room_image" style="max-width: 100%; max-height: 100%;" @error="handleImageError">
+                <img :src="room.room_image" style="max-width: 200px; max-height: 100px;" @error="handleImageError">
               </td>
               <td>
 

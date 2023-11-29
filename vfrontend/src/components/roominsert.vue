@@ -29,6 +29,7 @@
         <div class="mb-3">
           <label for="roomImage" class="form-label">Room Image</label>
           <input type="file" accept="image/*" @change="handleImageUpload" required class="form-control">
+
         </div>
 
         <button type="submit" class="btn btn-primary">Submit</button>
@@ -51,54 +52,58 @@ export default {
     };
   },
   methods: {
-    async save() {
-      try {
-        // Save the image to the database as Base64
-        const base64Image = await this.getBase64Image(this.roomImage);
+      async save() {
+          try {
+    // Generate a unique image name
+    const imageName = `room_${Date.now()}.png`;
 
-        // Save the room data to the database
-        const room = await axios.post("save", {
-          name: this.name,
-          description: this.description,
-          price: this.price,
-          capacity: this.capacity,
-          num_bed: this.num_bed,
-          room_image: base64Image,
-        });
-
-        console.log("Room saved successfully:", room);
-
-        // Clear the form after successful submission
-        this.name = "";
-        this.description = "";
-        this.price = "";
-        this.capacity = "";
-        this.num_bed = "";
-        this.roomImage = null;
+    // Create FormData object
+    const formData = new FormData();
+    formData.append('name', this.name);
+    formData.append('description', this.description);
+    formData.append('price', this.price);
+    formData.append('capacity', this.capacity);
+    formData.append('num_bed', this.num_bed);
+    formData.append('room_image', this.roomImage, this.roomImage.name);
 
 
-        // Refresh the data in the admin view
-        this.$emit("refreshData");
-      } catch (error) {
-        console.error("Error saving room:", error);
-        // You can display an error message to the user
-      }
-    },
+    // Save the room data to the database
+    const room = await axios.post("save", formData);
 
-    handleImageUpload(event) {
+    console.log("Room saved successfully:", room);
+
+    // Clear the form after successful submission
+    this.name = "";
+    this.description = "";
+    this.price = "";
+    this.capacity = "";
+    this.num_bed = "";
+    this.roomImage = null;
+
+    // Refresh the data in the admin view
+    this.$emit("refreshData");
+  } catch (error) {
+    console.error("Error saving room:", error);
+    // You can display an error message to the user
+  }
+
+},
+
+  handleImageUpload(event) {
       this.roomImage = event.target.files[0];
-    },
-    getBase64Image(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result.split(',')[1]);
-        reader.onerror = (error) => reject(error);
-        reader.readAsDataURL(file);
-      });
-    },
   },
+  getBase64Image(file) {
+      return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = (error) => reject(error);
+      reader.readAsDataURL(file);
+    });
+  },
+},
 };
 </script>
+
 
 <style scoped>
 .form-container {

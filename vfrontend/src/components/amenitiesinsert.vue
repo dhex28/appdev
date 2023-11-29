@@ -21,6 +21,11 @@
     <label for="price" class="form-label">Price</label>
     <input type="text" placeholder="Price" v-model="price" class="form-control">
   </div>
+  <div class="mb-3">
+          <label for="amenitiesImage" class="form-label">Image</label>
+          <input type="file" accept="image/*" @change="handleImageUpload" required class="form-control">
+
+        </div>
 
  
 
@@ -37,33 +42,37 @@
     data() {
       return {
         name: "",
-        description: "",
+        category:"",
+        description: "", 
         price: "",
+        amenitiesImage: null,
+        
+
 
       };
     },
     methods: {
       async save() {
         try {
-         
-          // Save the room data to the database
-          const room = await axios.post("amenitiesSave", {
-            name: this.name,
-            category: this.category,
-            description: this.description,
-            price: this.price,
-           
-          });
-  
-          console.log("Amenities saved successfully:", room);
-  
+          const imageName = `room_${Date.now()}.png`;
+
+          const formData = new FormData();
+          formData.append('name', this.name);
+          formData.append('category', this.category);
+          formData.append('description', this.description);
+          formData.append('price', this.price);
+          formData.append('amenities_image', this.amenitiesImage, this.amenitiesImage.name);
+          const amenitie = await axios.post("amenitiesSave", formData);
+
+          console.log("Amenities saved successfully:", amenitie );
+
           // Clear the form after successful submission
           this.name = "";
-          this.category = "";
+          this.capacity = "";
           this.description = "";
           this.price = "";
-      
-  
+          this.amenitiesImage = null;
+
   
           // Refresh the data in the admin view
           this.$emit("refreshData");
@@ -72,6 +81,17 @@
           // You can display an error message to the user
         }
       },
+      handleImageUpload(event) {
+      this.amenitiesImage = event.target.files[0];
+  },
+  getBase64Image(file) {
+      return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = (error) => reject(error);
+      reader.readAsDataURL(file);
+    });
+  },
   
     },
   };

@@ -9,7 +9,7 @@
         <!-- Sidebar scroll-->
         <div>
           <div class="brand-logo d-flex align-items-center justify-content-between">
-            <a href="./index.html" class="text-nowrap logo-img">
+            <a href="/admin" class="text-nowrap logo-img">
               <img :src="require('@/assets/admin/images/logos/dark-logo.svg')" />
             </a>
             <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
@@ -33,7 +33,7 @@
               </li>
               <li class="nav-small-cap">
                 <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                <span class="hide-menu">UI COMPONENTS</span>
+                <span class="hide-menu">MENU</span>
               </li>
               <li class="sidebar-item">
                 <a class="sidebar-link" href="/addroom" aria-expanded="false">
@@ -48,15 +48,15 @@
                   <span>
                     <i class="ti ti-alert-circle"></i>
                   </span>
-                  <span class="hide-menu">Amenities Reservation</span>
+                  <span class="hide-menu">Amenities </span>
                 </a>
               </li>
               <li class="sidebar-item">
-                <a class="sidebar-link" href="/payment" aria-expanded="false">
+                <a class="sidebar-link" href="/categories" aria-expanded="false">
                   <span>
                     <i class="ti ti-cards"></i>
                   </span>
-                  <span class="hide-menu">Payment</span>
+                  <span class="hide-menu">Categories</span>
                 </a>
               </li>
               <li class="sidebar-item">
@@ -80,7 +80,7 @@
                 <span class="hide-menu">AUTH</span>
               </li>
               <li class="sidebar-item">
-                <a class="sidebar-link" href="./authentication-login.html" aria-expanded="false">
+                <a class="sidebar-link" href="/" aria-expanded="false">
                   <span>
                     <i class="ti ti-login"></i>
                   </span>
@@ -125,6 +125,7 @@
               <th>Category</th>
               <th>Description</th>
               <th>Price</th>
+              <th>Image</th>
               <th>Action</th>
             </tr>
 
@@ -133,8 +134,15 @@
               <td>{{ amenitie.category }}</td>
               <td>{{ amenitie.description }}</td>
               <td>{{ amenitie.price }}</td>
+              <td v-if="amenitie.amenities_image">
+              <img
+                :src="amenitie.amenities_image"
+                style="max-width: 100%; max-height: 100%; width: 100px; height: auto;"
+                @error="handleImageError"
+              />
+            </td>
 
-              <td>
+            <td>
 
                 <button @click="updateRoom(amenitie.id)">Update</button>
               </td>
