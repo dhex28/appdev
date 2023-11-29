@@ -39,6 +39,9 @@ export default {
     display: inline-block;
     transition: background-color 0.3s ease; /* Add smooth transition effect */
 }
+.jumbotron-header{
+    color: rgb(224, 219, 219);
+}
 .btn-large {
     font-size: 18px; /* Adjust font size as needed */
 }
