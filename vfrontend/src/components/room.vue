@@ -17,7 +17,7 @@
             </div>
             <p class="card-text">NGN{{ room.price }} Per Night</p>
             <div class="buttons-container">
-              <a href="#" class="btn btn-outline-primary">View More</a>
+              
               <a href="https://timbu.com/search?query=hotel" class="btn btn-primary">Book Now</a>
             </div>
           </div>
