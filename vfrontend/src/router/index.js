@@ -12,6 +12,7 @@ import Amenitiesadmin from '../views/Amenitiesadmin.vue'
 import Dashboard from '../views/Dashboard.vue'
 import InventoryAdmin from '../views/InventoryAdmin.vue'
 import CategoriesAdmin from '../views/CategoriesAdmin.vue'
+import Products from '../views/Products.vue'
 
 
 // import Sidebar from '../views/Sidebar.vue'
@@ -93,6 +94,11 @@ const routes = [
 {
   path: '/categories',
   component: CategoriesAdmin
+},
+  
+{
+  path: '/prod',
+  component: Products
 },
 
   // ... other routes

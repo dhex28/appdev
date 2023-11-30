@@ -19,12 +19,13 @@
                     </div>
                     <ul class="header-nav-lists" :class="{ 'show': isMenuOpen }">
                         <li class="header-nav-list">
-                            <router-link to="/home" class="header-nav-link header-active" @click="closeMenu">Home</router-link>
+                            <router-link to="/" class="header-nav-link header-active" @click="closeMenu">Home</router-link>
                         </li>
                         <li class="header-nav-list">
                             <router-link to="/rooms" class="header-nav-link" @click="closeMenu">Rooms</router-link>
                         </li>
                             <li class="header-nav-list"><router-link to="/aminities" class="header-nav-link"> Aminities </router-link></li>
+                            <li class="header-nav-list"><router-link to="/prod" class="header-nav-link"> Products </router-link></li>
                             <li class="header-nav-list"><router-link to="/aboutus" class="header-nav-link"> About Us  </router-link></li>
                             <li class="header-nav-list">
                             <router-link to="/home" class="header-nav-link" @click="confirmLogin">Log In</router-link>
