@@ -40,7 +40,7 @@ export default {
 
         if (data.data.msg === 'okay') {
           alert("Registered successfully");
-          router.push('/');
+          router.push('/login');
         }
       } else {
         this.message = "passwordMismatch";

@@ -31,7 +31,7 @@ import CategoriesAdmin from '../views/CategoriesAdmin.vue'
 const routes = [
 
   {
-    path: '/',
+    path: '/login',
     name: 'login',
     component: LoginView
   },
@@ -47,7 +47,7 @@ const routes = [
 
 
   {
-    path: '/home',
+    path: '/',
     name: 'home',
     component: index
   },

@@ -43,12 +43,18 @@
     <input type="number" placeholder="Quantity" v-model="quantity" class="form-control" style="font-size: 16px;">
   </div>
   <div class="mb-3">
+          <label for="productImage" class="form-label">Image</label>
+          <input type="file" accept="image/*" @change="handleImageUpload" required class="form-control">
+
+        </div>
+  <div class="mb-3">
     <label for="status" class="form-label">Status</label>
     <select v-model="status" class="form-control">
       <option value="Available">Available</option>
       <option value="Not Available">Not Available</option>
     </select>
   </div>
+
 
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
@@ -66,6 +72,7 @@
         category_id: "",
         price: "",
         quantity: "",
+        productImage: null,
         status: "Available",
         categories:[],
 
@@ -79,7 +86,9 @@
                 formData.append("category_id", this.category_id);
                 formData.append("price", this.price);
                 formData.append("quantity", this.quantity);
+                formData.append('product_image', this.productImage, this.productImage.name);
                 formData.append("status", this.status);
+                
 
                 const product = await axios.post("inventorySave", formData);
 
@@ -89,13 +98,26 @@
                 this.product_name = "";
                 this.category_id = "";
                 this.price = "";
-                this.quantity = "";                
+                this.quantity = "";   
+                this.productImage = null;
                 this.status = "";
 
                 this.$emit("refreshData");
             } catch (error) {
                 console.error("Error saving product:", error);
             }
+            
+        },
+        handleImageUpload(event) {
+      this.productImage = event.target.files[0];
+        },
+        getBase64Image(file) {
+            return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = (error) => reject(error);
+            reader.readAsDataURL(file);
+          });
         },
         async fetchCategories() {
         try {

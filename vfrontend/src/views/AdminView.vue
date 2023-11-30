@@ -56,7 +56,7 @@
                   <span>
                     <i class="ti ti-cards"></i>
                   </span>
-                  <span class="hide-menu">categories</span>
+                  <span class="hide-menu">Categories</span>
                 </a>
               </li>
               <li class="sidebar-item">

@@ -8,10 +8,10 @@
                             
                                 <div class="logout-modal" v-if="isLogoutModalOpen">
                         <div class="modal-content">
-                        <p>Are you sure you want to logout?</p>
+                        <p>Are you sure you want to login  in admin?</p>
                         <div class="modal-buttons">
-        <button @click="confirmLogout">Yes</button>
-        <button @click="cancelLogout">Cancel</button>
+        <button @click="confirmLogin">Yes</button>
+        <button @click="cancelLogin">Cancel</button>
         </div>
         </div>
     </div>
@@ -27,7 +27,7 @@
                             <li class="header-nav-list"><router-link to="/aminities" class="header-nav-link"> Aminities </router-link></li>
                             <li class="header-nav-list"><router-link to="/aboutus" class="header-nav-link"> About Us  </router-link></li>
                             <li class="header-nav-list">
-                            <router-link to="/home" class="header-nav-link" @click="confirmLogout">Logout</router-link>
+                            <router-link to="/home" class="header-nav-link" @click="confirmLogin">Log In</router-link>
                             </li>
                             </ul>
             <div class="header-hamburger-icon" @click="toggleMenu">
@@ -56,13 +56,13 @@
         closeMenu() {
             this.isMenuOpen = false;
         },
-        confirmLogout() {
+        confirmLogin() {
             
-            const isConfirmed = window.confirm("Are you sure you want to logout?");
+            const isConfirmed = window.confirm("Are you sure you want to login in admin?");
             
             if (isConfirmed) {
         
-            this.$router.push('/');
+            this.$router.push('/login');
             }
         },
         },

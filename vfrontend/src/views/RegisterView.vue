@@ -19,7 +19,7 @@
                     <div v-if="message === 'passwordMismatch'" style="color: rgb(35, 32, 32);">Passwords do not match</div>
     
                     <v-btn type="submit" block class="mt-2" color="warning">Submit</v-btn>
-                    <router-link to="/" style="color: #FFFFCC;" class="d-block text-center mt-2">Login</router-link>
+                    <router-link to="/login" style="color: #FFFFCC;" class="d-block text-center mt-2">Login</router-link>
                     </v-form>
                 </v-sheet>
     
@@ -58,7 +58,7 @@
     
             if (data.data.msg === 'okay') {
                 alert("Registered successfully");
-                router.push('/');
+                router.push('/login');
             }
             } else {
             this.message = "passwordMismatch";

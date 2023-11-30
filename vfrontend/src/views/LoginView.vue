@@ -67,7 +67,7 @@
 
                 sessionStorage.setItem("jwt", data.data.token) 
 
-                router.push('/home'); 
+                router.push('/admin'); 
 
                 } 
 
