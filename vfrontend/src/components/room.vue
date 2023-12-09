@@ -60,5 +60,8 @@ export default {
 </script>
 
 <style scoped>
-/* Add any additional styling here if needed */
+.card-img-top {
+  height: 200px; /* Adjust the height according to your design */
+  object-fit: cover; /* Ensure the image covers the entire container */
+}
 </style>

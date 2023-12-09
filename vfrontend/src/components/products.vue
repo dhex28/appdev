@@ -1,24 +1,26 @@
 <template>
   <section class="container rooms-section">
-    <div class="row justify-content-center">
-      <div v-for="product in products" :key="product.id" class="col-md-6 col-lg-4 mb-4">
+    <div class="row justify-content-start flex-wrap">
+      <div v-for="product in products" :key="product.id" class="col-sm-6 col-md-4 col-lg-3 mb-4">
         <div class="card">
-    
+          <div>
+            <!-- Add checkbox input for product selection -->
+            <input type="checkbox" v-model="product.selected" class="product-checkbox">
+          </div>
           <div class="card-body">
             <h5 class="card-title">{{ product.name }}</h5>
             <p class="card-text text-muted">{{ product.description }}</p>
             <div class="details-container">
               <p class="list-text text-muted">{{ product.quantity }} in stock</p>
-              
             </div>
             <div class="details-container">
               <p class="list-text">₱{{ product.price }}</p>
             </div>
             <div class="quantity-container">
-                <button @click="decreaseQuantity(product)" class="btn btn-outline-secondary btn-sm">-</button>
-                <span class="quantity">{{ product.quantitySelected || 0 }}</span>
-                <button @click="increaseQuantity(product)" class="btn btn-outline-secondary btn-sm">+</button>
-              </div>
+              <button @click="decreaseQuantity(product)" class="btn btn-outline-secondary btn-sm">-</button>
+              <span class="quantity">{{ product.quantitySelected || 0 }}</span>
+              <button @click="increaseQuantity(product)" class="btn btn-outline-secondary btn-sm">+</button>
+            </div>
             <div class="total-amount">
               <h4>Total Amount: ₱{{ calculateTotalAmount(product) }}</h4>
             </div>
@@ -28,9 +30,10 @@
           </div>
         </div>
       </div>
-      <div v-if="loading" class="col-12 text-center mt-4">Loading products...</div>
-      <div v-if="error" class="col-12 text-center mt-4 text-danger">{{ error }}</div>
     </div>
+    <div v-if="loading" class="col-12 text-center mt-4">Loading products...</div>
+    <div v-if="error" class="col-12 text-center mt-4 text-danger">{{ error }}</div>
+
     <!-- Selected Items Summary -->
     <div v-if="selectedProducts.length > 0" class="selected-items mt-4">
       <h2>Selected Items</h2>
@@ -40,54 +43,53 @@
           {{ product.product_name }} - ₱{{ calculateTotalAmount(product) }}
         </li>
       </ul>
-      </div>
-      <p>Total Order Amount: ₱{{ totalOrderAmount }}</p>
+    </div>
+    <p>Total Order Amount: ₱{{ totalOrderAmount }}</p>
 
-      <!-- Customer Information -->
-      <div class="customer-info mt-4">
-  <h3 class="mb-4">Customer Information</h3>
-  <form>
-    <div class="form-group row">
-      <label for="address" class="col-sm-2 col-form-label">Address</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="address" v-model="customerInfo.address">
-      </div>
+    <!-- Customer Information -->
+    <div class="customer-info mt-4">
+      <h3 class="mb-4">Customer Information</h3>
+      <form>
+        <div class="form-group row">
+          <label for="address" class="col-sm-2 col-form-label">Address</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="address" v-model="customerInfo.address">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="contact" class="col-sm-2 col-form-label">Contact</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="contact" v-model="customerInfo.contact">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="otherInfo" class="col-sm-2 col-form-label">Other Info</label>
+          <div class="col-sm-10">
+            <textarea class="form-control" id="otherInfo" rows="3" v-model="customerInfo.otherInfo"></textarea>
+          </div>
+        </div>
+      </form>
     </div>
-    <div class="form-group row">
-      <label for="contact" class="col-sm-2 col-form-label">Contact</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="contact" v-model="customerInfo.contact">
-      </div>
-    </div>
-    <div class="form-group row">
-      <label for="otherInfo" class="col-sm-2 col-form-label">Other Info</label>
-      <div class="col-sm-10">
-        <textarea class="form-control" id="otherInfo" rows="3" v-model="customerInfo.otherInfo"></textarea>
-      </div>
-    </div>
-  </form>
-</div>
-
 
     <button @click="placeOrder" class="btn btn-success mt-4">Place Order</button>
 
-<!-- Display Order Details -->
-<div v-if="orderPlaced" class="order-details mt-4">
-  <h2>Order Details</h2>
-  <p><strong>Customer Information:</strong></p>
-  <p><strong>Address:</strong> {{ customerInfo.address }}</p>
-  <p><strong>Contact:</strong> {{ customerInfo.contact }}</p>
-  <p><strong>Other Info:</strong> {{ customerInfo.otherInfo }}</p>
+    <!-- Display Order Details -->
+    <div v-if="orderPlaced" class="order-details mt-4">
+      <h2>Order Details</h2>
+      <p><strong>Customer Information:</strong></p>
+      <p><strong>Address:</strong> {{ customerInfo.address }}</p>
+      <p><strong>Contact:</strong> {{ customerInfo.contact }}</p>
+      <p><strong>Other Info:</strong> {{ customerInfo.otherInfo }}</p>
 
-  <p><strong>Selected Products:</strong></p>
-  <ul>
-    <li v-for="product in selectedProducts" :key="product.id">
-      {{ product.product_name }} - Quantity: {{ product.quantitySelected }} - Total Amount: ₱{{ calculateTotalAmount(product) }}
-    </li>
-  </ul>
-  <p><strong>Total Order Amount:</strong> ₱{{ totalOrderAmount }}</p>
-</div>
-</section>
+      <p><strong>Selected Products:</strong></p>
+      <ul>
+        <li v-for="product in selectedProducts" :key="product.id">
+          {{ product.product_name }} - Quantity: {{ product.quantitySelected }} - Total Amount: ₱{{ calculateTotalAmount(product) }}
+        </li>
+      </ul>
+      <p><strong>Total Order Amount:</strong> ₱{{ totalOrderAmount }}</p>
+    </div>
+  </section>
 </template>
 
 <script>
