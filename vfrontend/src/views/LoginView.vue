@@ -7,7 +7,7 @@
             <h5 class="card-title text-center">Login</h5>
 
             <v-sheet width="300" class="mx-auto">
-              <v-form fast-fail @submit.prevent="login">
+              <v-form @submit.prevent="login">
                 <div v-if="message === 'error'" class="alert alert-danger">Invalid response</div>
                 <div v-if="message === 'fillUsername'" class="alert alert-warning">Fill in the username</div>
                 <div v-if="message === 'fillPassword'" class="alert alert-warning">Fill in the password</div>
@@ -68,14 +68,29 @@ export default {
           return;
         }
 
+        // Check if the entered username and password match the hardcoded admin credentials
+        if (this.username === 'loveronica' && this.password === '_4dm!N') {
+          sessionStorage.setItem('isAdmin', 'true');
+          router.push('/admin');
+          return;
+        }
+
+        // If not admin credentials, proceed with server-side validation
         const data = await axios.post("api/login", {
           username: this.username,
           password: this.password
         });
 
         if (data.data.msg === 'okay') {
-          sessionStorage.setItem("jwt", data.data.token);
-          router.push('/admin');
+          const isAdmin = data.data.isAdmin === 'true';
+
+          if (isAdmin) {
+            sessionStorage.setItem("isAdmin", "true");
+            router.push('/admin');
+          } else {
+            sessionStorage.setItem("jwt", data.data.token);
+            router.push('/');
+          }
         } else {
           this.message = "wrongCredentials";
         }

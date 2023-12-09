@@ -28,7 +28,7 @@
                             <li class="header-nav-list"><router-link to="/prod" class="header-nav-link"> Products </router-link></li>
                             <li class="header-nav-list"><router-link to="/aboutus" class="header-nav-link"> About Us  </router-link></li>
                             <li class="header-nav-list">
-                            <router-link to="/" class="header-nav-link" @click="confirmLogin">Log In</router-link>
+                            <router-link to="/login" class="header-nav-link" >Log In</router-link>
                             </li>
                             </ul>
             <div class="header-hamburger-icon" @click="toggleMenu">
@@ -56,15 +56,6 @@
         },
         closeMenu() {
             this.isMenuOpen = false;
-        },
-        confirmLogin() {
-            
-            const isConfirmed = window.confirm("Are you sure you want to login in admin?");
-            
-            if (isConfirmed) {
-        
-            this.$router.push('/login');
-            }
         },
         },
     };

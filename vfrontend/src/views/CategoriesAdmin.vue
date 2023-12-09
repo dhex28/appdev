@@ -68,6 +68,23 @@
                   </a>
                 </li>
                 <li class="sidebar-item">
+                  <a class="sidebar-link" href="/productinventory" aria-expanded="false">
+                    <span>
+                      <i class="ti ti-alert-circle"></i>
+                    </span>
+                    <span class="hide-menu">Products </span>
+                  </a>
+                </li>
+                <li class="sidebar-item">
+                  <a class="sidebar-link" href="/pos" aria-expanded="false">
+                    <span>
+                      <i class="ti ti-typography"></i>
+                    </span>
+                    <span class="hide-menu">POS</span>
+                  </a>
+                </li>
+
+                <li class="sidebar-item">
                   <a class="sidebar-link" href="/notification" aria-expanded="false">
                     <span>
                       <i class="ti ti-typography"></i>

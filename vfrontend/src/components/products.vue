@@ -3,27 +3,24 @@
     <div class="row justify-content-center">
       <div v-for="product in products" :key="product.id" class="col-md-6 col-lg-4 mb-4">
         <div class="card">
-          <div class="image-container">
-            <!-- Add checkbox input for product selection -->
-            <input type="checkbox" v-model="product.selected" class="product-checkbox">
-            <img :src="product.product_image" alt="Product Image" class="card-img-top">
-          </div>
+    
           <div class="card-body">
-            <h5 class="card-title">{{ product.product_name }}</h5>
+            <h5 class="card-title">{{ product.name }}</h5>
             <p class="card-text text-muted">{{ product.description }}</p>
             <div class="details-container">
               <p class="list-text text-muted">{{ product.quantity }} in stock</p>
-              <div class="quantity-container">
+              
+            </div>
+            <div class="details-container">
+              <p class="list-text">₱{{ product.price }}</p>
+            </div>
+            <div class="quantity-container">
                 <button @click="decreaseQuantity(product)" class="btn btn-outline-secondary btn-sm">-</button>
                 <span class="quantity">{{ product.quantitySelected || 0 }}</span>
                 <button @click="increaseQuantity(product)" class="btn btn-outline-secondary btn-sm">+</button>
               </div>
-            </div>
-            <div class="details-container">
-              <p class="list-text">NGN{{ product.price }}</p>
-            </div>
             <div class="total-amount">
-              <p>Total Amount: NGN{{ calculateTotalAmount(product) }}</p>
+              <h4>Total Amount: ₱{{ calculateTotalAmount(product) }}</h4>
             </div>
             <div class="buttons-container">
               <a :href="'https://timbu.com/search?query=' + product.product_name" class="btn btn-primary btn-sm">Buy Now</a>
@@ -40,11 +37,11 @@
       <ul>
         <!-- Display selected items -->
         <li v-for="product in selectedProducts" :key="product.id">
-          {{ product.product_name }} - NGN{{ calculateTotalAmount(product) }}
+          {{ product.product_name }} - ₱{{ calculateTotalAmount(product) }}
         </li>
       </ul>
       </div>
-      <p>Total Order Amount: NGN{{ totalOrderAmount }}</p>
+      <p>Total Order Amount: ₱{{ totalOrderAmount }}</p>
 
       <!-- Customer Information -->
       <div class="customer-info mt-4">
@@ -71,7 +68,7 @@
   </form>
 </div>
 
-\\\
+
     <button @click="placeOrder" class="btn btn-success mt-4">Place Order</button>
 
 <!-- Display Order Details -->
@@ -85,10 +82,10 @@
   <p><strong>Selected Products:</strong></p>
   <ul>
     <li v-for="product in selectedProducts" :key="product.id">
-      {{ product.product_name }} - Quantity: {{ product.quantitySelected }} - Total Amount: NGN{{ calculateTotalAmount(product) }}
+      {{ product.product_name }} - Quantity: {{ product.quantitySelected }} - Total Amount: ₱{{ calculateTotalAmount(product) }}
     </li>
   </ul>
-  <p><strong>Total Order Amount:</strong> NGN{{ totalOrderAmount }}</p>
+  <p><strong>Total Order Amount:</strong> ₱{{ totalOrderAmount }}</p>
 </div>
 </section>
 </template>
@@ -120,7 +117,7 @@ export default {
   methods: {
     async fetchRooms() {
       try {
-        const response = await axios.get("getInventory");
+        const response = await axios.get("/api/getProducts");
         this.products = response.data.map(product => ({
           ...product,
           quantitySelected: 0,
@@ -272,5 +269,10 @@ export default {
 
 .selected-items li {
   font-size: 1rem;
+}
+
+.product-image {
+  height: 150px; /* Adjust the height as needed */
+  object-fit: cover;
 }
 </style>

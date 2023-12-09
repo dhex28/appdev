@@ -6,13 +6,16 @@ import aboutus from '../views/AboutUsView.vue'
 import AdminView from '../views/AdminView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import LoginView from '../views/LoginView.vue'
-import MainView from '../views/MainView.vue'
+
 import RoomView from '../views/RoomView.vue'
 import Amenitiesadmin from '../views/Amenitiesadmin.vue'
 import Dashboard from '../views/Dashboard.vue'
 import InventoryAdmin from '../views/InventoryAdmin.vue'
 import CategoriesAdmin from '../views/CategoriesAdmin.vue'
 import Products from '../views/Products.vue'
+import ProductsAdmin from '../views/ProductsAdmin.vue'
+import HistoryPage from '../views/HistoryPage.vue'
+import PosAdmin from '../views/PosAdmin.vue'
 
 
 // import Sidebar from '../views/Sidebar.vue'
@@ -64,42 +67,65 @@ const routes = [
     component: aminities
   },
   {
+    path: '/prod',
+    component: Products
+  },
+  {
     path: '/aboutus',
     name: 'aboutus',
     component: aboutus
   },
   {
     path: '/admin',
-    component: AdminView
+    component: AdminView,
+    meta: { requiresAdmin: true },
   },
 
   {
     path: '/addroom',
-    component: RoomView
+    component: RoomView,
+    meta: { requiresAdmin: true },
+  },
+
+  {
+    path: '/inventory',
+    component: InventoryAdmin,
+    meta: { requiresAdmin: true },
   },
   {
+    path: '/pos',
+    component: PosAdmin,
+    meta: { requiresAdmin: true },
+  },
+
+  {
     path: '/addamenities',
-    component: Amenitiesadmin
+    component: Amenitiesadmin,
+    meta: { requiresAdmin: true },
   },
 
   {
     path: '/dashboard',
-    component: Dashboard
-  },
-  {
-    path: '/inventory',
-    component: InventoryAdmin
+    component: Dashboard,
+    meta: { requiresAdmin: true },
   },
   
 {
   path: '/categories',
-  component: CategoriesAdmin
+  component: CategoriesAdmin,
+  meta: { requiresAdmin: true },
 },
-  
 {
-  path: '/prod',
-  component: Products
+  path: '/productinventory',
+  component: ProductsAdmin,
+  meta: { requiresAdmin: true },
 },
+{ path: '/history/:upc', 
+name: 'history',  
+component: HistoryPage },
+
+  
+
 
   // ... other routes
   // {
@@ -126,11 +152,6 @@ const routes = [
   //   component: RoomView
   // },
 
-{
-    path: '/main',
-    component: MainView,
-    meta :{requiresAuth: true}
-  },
 
 
 ]
@@ -140,29 +161,21 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, from, next)=>{
-  const isLoggedin = checkUserLogin();
-  if(to.matched.some((record) =>record.meta.requiresAuth)){
-  if(!isLoggedin){
-    next("/login");
-  }else{
+router.beforeEach((to, from, next) => {
+  const isAdmin = sessionStorage.getItem('isAdmin') === 'true';
+
+  // Check if the user is an admin and not on the login page
+  if (isAdmin && to.path !== '/login') {
+    // Continue with navigation for the admin
+    next();
+  } else if (to.meta.requiresAdmin && !isAdmin) {
+    // Redirect to login or home if user is not an admin
+    next(isAdmin ? '/admin' : '/login');
+  } else {
+    // Continue with navigation for non-admin users
     next();
   }
-
-  }else{
-    next();
-  }
-
 });
-
-function checkUserLogin(){
-  const userToken = sessionStorage.getItem("token");
-  return !!userToken;
-  
-
-
-}
-
 
 export default router
 

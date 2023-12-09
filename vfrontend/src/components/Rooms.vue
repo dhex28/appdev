@@ -12,7 +12,7 @@
             </div>
             <div class="details-container">
               <img :src="require('@/assets/img/bed.png')" alt="tick" class="list-icon">
-              <p class="list-text">{{ room.num_bed }} Kingsize bed</p>
+              <p class="list-text">{{ room.num_bed }} Bed(maximum)</p>
             </div>
           </div>
           <p class="amount-text">NGN{{ room.price }} Per Night</p>

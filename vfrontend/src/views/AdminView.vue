@@ -51,20 +51,36 @@
                   <span class="hide-menu">Amenities </span>
                 </a>
               </li>
-              <li class="sidebar-item">
+              <!-- <li class="sidebar-item">
                 <a class="sidebar-link" href="/categories" aria-expanded="false">
                   <span>
                     <i class="ti ti-cards"></i>
                   </span>
                   <span class="hide-menu">Categories</span>
                 </a>
-              </li>
-              <li class="sidebar-item">
+              </li> -->
+              <!-- <li class="sidebar-item">
                 <a class="sidebar-link" href="/inventory" aria-expanded="false">
                   <span>
                     <i class="ti ti-file-description"></i>
                   </span>
                   <span class="hide-menu">Inventory</span>
+                </a>
+              </li> -->
+              <li class="sidebar-item">
+                  <a class="sidebar-link" href="/productinventory" aria-expanded="false">
+                    <span>
+                      <i class="ti ti-cards"></i>
+                    </span>
+                    <span class="hide-menu">Inventory</span>
+                  </a>
+                </li>
+                <li class="sidebar-item">
+                <a class="sidebar-link" href="/pos" aria-expanded="false">
+                  <span>
+                    <i class="fas fa-cash-register"></i>
+                  </span>
+                  <span class="hide-menu">POS</span>
                 </a>
               </li>
               <li class="sidebar-item">

@@ -68,6 +68,22 @@
                   </a>
                 </li>
                 <li class="sidebar-item">
+                  <a class="sidebar-link" href="/productinventory" aria-expanded="false">
+                    <span>
+                      <i class="ti ti-alert-circle"></i>
+                    </span>
+                    <span class="hide-menu">Products </span>
+                  </a>
+                </li>
+                <li class="sidebar-item">
+                  <a class="sidebar-link" href="/pos" aria-expanded="false">
+                    <span>
+                      <i class="ti ti-typography"></i>
+                    </span>
+                    <span class="hide-menu">POS</span>
+                  </a>
+                </li>
+                <li class="sidebar-item">
                   <a class="sidebar-link" href="/notification" aria-expanded="false">
                     <span>
                       <i class="ti ti-typography"></i>
@@ -130,7 +146,7 @@
                     <th>Image</th>
                     <th>Status</th>
                     <th>Action</th>
-                    <th>History</th>
+
                   </tr>
 
                 <tbody>
@@ -142,7 +158,7 @@
                     <td v-if="product.product_image">
                       <img
                         :src="product.product_image"
-                        style="max-width: 100%; max-height: 100%; width: 100px; height: auto;"
+                        style="max-width: 80px; max-height: 90px; "
                         @error="handleImageError"
                       />
                     </td>
@@ -150,9 +166,7 @@
                     <td>
                       <button class="btn btn-outline-danger btn-sm" @click="editRecord(product.id)">Edit</button>
                     </td>
-                    <td>
-                      <button class="btn btn-outline-danger btn-sm" @click="showProductHistory(product.id)">Show History</button>
-                    </td>
+                    
                   </tr>
                 </tbody>
               </table>
@@ -161,32 +175,6 @@
         </div>
 
     <!-- Add a modal for displaying product history -->
-<div v-if="selectedProductHistory">
-  <div class="modal">
-    <div class="modal-content">
-      <span class="close" @click="selectedProductHistory = null">&times;</span>
-      <h3>Product History for {{ selectedProductHistory.product_name }}</h3>
-      <table border="1" class="table-container">
-        <tr>
-          <th>Date</th>
-          <th>Previous Quantity</th>
-          <th>Added/Removed Quantity</th>
-          <th>New Quantity</th>
-        </tr>
-        <tbody>
-          <tr v-for="history in selectedProductHistory.history" :key="history.id">
-            <td>{{ history.date }}</td>
-            <td>{{ history.previous_quantity }}</td>
-            <td>{{ history.added_removed_quantity }}</td>
-            <td>{{ history.new_quantity }}</td>
-            
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
 
   </body>
 </template>
@@ -259,20 +247,6 @@ export default {
       const category = this.categories.find(category => category.id === categoryId);
       return category ? category.category_name : 'Unknown';
     },
-    async getProductHistory(productId) {
-    try {
-      const response = await axios.get(`getProductHistory/${productId}`);
-      return response.data;
-    } catch (error) {
-      console.error(`Error fetching product history for ${productId}:`, error);
-    }
-  },
-  async showProductHistory(productId) {
-    const productHistory = await this.getProductHistory(productId);
-    if (productHistory) {
-      this.selectedProductHistory = { ...productHistory, product_id: productId };
-    }
-  },
   },
 };
 </script>

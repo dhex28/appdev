@@ -13,9 +13,9 @@
             </div>
             <div class="details-container">
               <img :src="require('@/assets/img/bed.png')" alt="tick" class="list-icon">
-              <p class="list-text">{{ room.num_bed }} Kingsize bed</p>
+              <p class="list-text">{{ room.num_bed }} Bed(maximum)</p>
             </div>
-            <p class="card-text">NGN{{ room.price }} Per Night</p>
+            <p class="card-text">₱{{ room.price }} Per Night</p>
             <div class="buttons-container">
               
               <a href="https://timbu.com/search?query=hotel" class="btn btn-primary">Book Now</a>
