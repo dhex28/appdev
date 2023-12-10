@@ -10,8 +10,7 @@
         <div>
           <div class="brand-logo d-flex align-items-center justify-content-between">
             <a href="./index.html" class="text-nowrap logo-img">
-              <img :src="require('@/assets/admin/images/logos/dark-logo.svg')" />
-            </a>
+            </a> <img :src="require('@/assets/img/veronicalogo.png')" />
             <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
               <i class="ti ti-x fs-8"></i>
             </div>

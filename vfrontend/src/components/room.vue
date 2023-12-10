@@ -17,14 +17,63 @@
             </div>
             <p class="card-text">₱{{ room.price }} Per Night</p>
             <div class="buttons-container">
-              
-              <a href="https://timbu.com/search?query=hotel" class="btn btn-primary">Book Now</a>
+              <button @click="openBookingDialog(room)" class="btn btn-primary">Book Now</button>
             </div>
           </div>
         </div>
       </div>
       <div v-if="loading" class="col-12 text-center mt-4">Loading rooms...</div>
       <div v-if="error" class="col-12 text-center mt-4 text-danger">{{ error }}</div>
+    </div>
+    <!-- Modal for booking -->
+    <div v-if="showBookingDialog" class="modal fade show" tabindex="-1" role="dialog" style="display: block;">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Book Room - {{ selectedRoom.name }}</h5>
+            <button type="button" class="close" @click="closeBookingDialog" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form @submit.prevent="submitBooking">
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="checkInDate">Check-in Date:</label>
+                <input type="date" class="form-control" v-model="booking.checkInDate" required>
+              </div>
+              <div class="form-group">
+                <label for="checkOutDate">Check-out Date:</label>
+                <input type="date" class="form-control" v-model="booking.checkOutDate" required>
+              </div>
+              <div class="form-group">
+                <label for="specialRequest">Special Request:</label>
+                <textarea class="form-control" v-model="booking.specialRequest"></textarea>
+              </div>
+              <h3>Contact Information</h3>
+              <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" v-model="booking.name" required>
+              </div>
+              <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" v-model="booking.email" required>
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" class="form-control" v-model="booking.phoneNumber" required>
+              </div>
+              <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" class="form-control" v-model="booking.address" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" @click="closeBookingDialog">Close</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </section>
 </template>
@@ -38,6 +87,17 @@ export default {
       rooms: [],
       loading: true,
       error: null,
+      showBookingDialog: false,
+      selectedRoom: null,
+      booking: {
+        checkInDate: '',
+        checkOutDate: '',
+        specialRequest: '',
+        name: '',
+        email: '',
+        phoneNumber: '',
+        address: '',
+      },
     };
   },
   mounted() {
@@ -55,11 +115,75 @@ export default {
         this.error = "Error fetching rooms. Please try again later.";
       }
     },
+    openBookingDialog(room) {
+      this.selectedRoom = room;
+      this.showBookingDialog = true;
+    },
+    closeBookingDialog() {
+      this.showBookingDialog = false;
+      this.selectedRoom = null;
+      this.resetBookingForm();
+    },
+    resetBookingForm() {
+      this.booking = {
+        checkInDate: '',
+        checkOutDate: '',
+        specialRequest: '',
+        name: '',
+        email: '',
+        phoneNumber: '',
+        address: '',
+      };
+    },
+    async submitBooking() {
+      try {
+        // Send booking details to the server using axios or a similar method
+        // Example: const response = await axios.post('bookingEndpoint', this.booking);
+        // Handle success response
+        console.log('Booking submitted:', this.booking);
+        this.closeBookingDialog();
+      } catch (error) {
+        console.error('Error submitting booking:', error);
+        // Handle error
+      }
+    },
   },
 };
 </script>
 
 <style scoped>
+/* Styles for modal/dialog */
+.modal {
+  display: block;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 90%; /* Adjusted width for the modal content */
+}
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
 .card-img-top {
   height: 200px; /* Adjust the height according to your design */
   object-fit: cover; /* Ensure the image covers the entire container */
