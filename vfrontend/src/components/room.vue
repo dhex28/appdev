@@ -5,7 +5,7 @@
         <div class="card">
           <img :src="room.room_image" alt="Room Image" class="card-img-top">
           <div class="card-body">
-            <h3 class="card-title">{{ room.name }}</h3>
+            <h2 class="card-title" style="font-weight: bold;">{{ room.name }}</h2>
             <p class="card-text">{{ room.description }}</p>
             <div class="details-container">
               <img :src="require('@/assets/img/check-square.svg')" alt="tick" class="list-icon">
@@ -30,13 +30,18 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Book Room - {{ selectedRoom.name }}</h5>
+            <h4 class="modal-title font-weight-bold">Book Room</h4>
             <button type="button" class="close" @click="closeBookingDialog" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <form @submit.prevent="submitBooking">
             <div class="modal-body">
+              
+            <div class="form-group">
+              <label for="roomName">Room Name:</label>
+              <input type="text" id="roomName" class="form-control" v-model="selectedRoom.name" readonly>
+            </div>
               <div class="form-group">
                 <label for="checkInDate">Check-in Date:</label>
                 <input type="date" class="form-control" v-model="booking.checkInDate" required>
@@ -90,6 +95,7 @@ export default {
       showBookingDialog: false,
       selectedRoom: null,
       booking: {
+        room_name: '',
         checkInDate: '',
         checkOutDate: '',
         specialRequest: '',
@@ -137,10 +143,23 @@ export default {
     },
     async submitBooking() {
       try {
-        // Send booking details to the server using axios or a similar method
-        // Example: const response = await axios.post('bookingEndpoint', this.booking);
+        // Prepare the booking data
+        const bookingData = {
+          room_id: this.selectedRoom.id,
+          check_in_date: this.booking.checkInDate,
+          check_out_date: this.booking.checkOutDate,
+          special_request: this.booking.specialRequest,
+          name: this.booking.name,
+          email: this.booking.email,
+          phone_number: this.booking.phoneNumber,
+          address: this.booking.address,
+        };
+
+        // Send booking details to the server
+        const response = await axios.post("/api/bookingsRoom", bookingData);
+
         // Handle success response
-        console.log('Booking submitted:', this.booking);
+        console.log('Booking submitted:', response.data);
         this.closeBookingDialog();
       } catch (error) {
         console.error('Error submitting booking:', error);

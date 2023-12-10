@@ -23,7 +23,7 @@
                 <span class="hide-menu">Home</span>
               </li>
               <li class="sidebar-item">
-                <a class="sidebar-link" href="./index.html" aria-expanded="false">
+                <a class="sidebar-link" href="/dashboard" aria-expanded="false">
                   <span>
                     <i class="ti ti-layout-dashboard"></i>
                   </span>
@@ -32,8 +32,16 @@
               </li>
               <li class="nav-small-cap">
                 <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                <span class="hide-menu">UI COMPONENTS</span>
+                <span class="hide-menu">Menu</span>
               </li>
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="/bookingroom" aria-expanded="false">
+                    <span>
+                    <i class="fas fa-calendar"></i>
+                    </span>
+                    <span class="hide-menu">Booking</span>
+                </a>
+                </li>
               <li class="sidebar-item">
                 <a class="sidebar-link" href="/addroom" aria-expanded="false">
                   <span>

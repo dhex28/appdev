@@ -24,56 +24,62 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">Reservation Details</h5>
-					<button type="button" class="close" @click="closeModal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-  <form>
-    <table v-if="selectedAmenity" class="table">
-      <thead>
-        <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Category</th>
-          <th scope="col">Price</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>{{ selectedAmenity.name }}</td>
-          <td>{{ selectedAmenity.category }}</td>
-          <td>{{ selectedAmenity.price }}</td>
-        </tr>
-        <tr>
-          <td colspan="2">
-            <label for="customerName">Customer Name:</label>
-            <input type="text" id="customerName" v-model="customerName" class="form-control">
-          </td>
-          <td colspan="2">
-            <label for="reservationPrice">Contact:</label>
-            <input type="text" id="reservationPrice" v-model="reservationPrice" class="form-control">
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2">
-            <label for="customerEmail">Email:</label>
-            <input type="email" id="customerEmail" v-model="customerEmail" class="form-control">
-          </td>
-          <td colspan="2">
-            <label for="customerAddress">Address:</label>
-            <input type="text" id="customerAddress" v-model="customerAddress" class="form-control">
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </form>
-</div>
+				<h5 class="modal-title">Reservation Details</h5>
+                <button type="button" class="close" @click="closeModal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <table v-if="selectedAmenity" class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td> <input type="text" :value="selectedAmenity.name" class="form-control" readonly>
+                      </td>
+                                <td>
+                                    <input type="date" v-model="date" class="form-control">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <label for="customerName">Customer Name:</label>
+                                    <input type="text" id="customerName" v-model="customerName" class="form-control">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    
+                                    <label for="reservationContact">Contact:</label>
+									<input type="text" id="reservationContact" v-model="reservationContact" class="form-control">
 
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" @click="closeModal">Close</button>
-					<button type="button" class="btn btn-primary" @click="confirmReservation">Confirm Reservation</button>
-				</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <label for="customerEmail">Email:</label>
+                                    <input type="email" id="customerEmail" v-model="customerEmail" class="form-control">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <label for="customerAddress">Address:</label>
+                                    <input type="text" id="customerAddress" v-model="customerAddress" class="form-control">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @click="closeModal">Close</button>
+                <button type="button" class="btn btn-primary" @click="confirmReservation">Confirm Reservation</button>
+            </div>
 				</div>
 			</div>
 			</div>	
@@ -85,14 +91,17 @@
 import axios from 'axios';
 
 export default {
-data() {
-return {
-amenities: [],
-selectedAmenity: null,
-showModal: false,
-customerName: '', // New field for customer name
-reservationContact: '' // New field for reservation price
-};
+	data() {
+    return {
+        amenities: [],
+        selectedAmenity: null,
+        showModal: false,
+        customerName: '',
+        reservationContact: '',
+        date: '', // Add this line
+        customerEmail: '',
+        customerAddress: '',
+    };
 },
 mounted() {
 this.fetchAmenities();
@@ -114,15 +123,38 @@ closeModal() {
 this.showModal = false;
 },
 confirmReservation() {
-if (this.selectedAmenity && this.reservationContact && this.customerName && this.reservationPrice) {
-	console.log('Reservation confirmed for:', this.selectedAmenity.name);
-	console.log('Customer Name:', this.customerName);
-	console.log('Price:', this.reservationPrice);
-	this.showModal = false;
-	// Further logic for reservation confirmation
-} else {
-	console.error('Please fill in all fields.');
-}
+    console.log('Selected Amenity:', this.selectedAmenity);
+    console.log('Customer Name:', this.customerName);
+    console.log('Reservation Contact:', this.reservationContact);
+    console.log('Customer Email:', this.customerEmail);
+    console.log('Customer Address:', this.customerAddress);
+
+    if (this.selectedAmenity.name !== '' && this.customerName !== '' && this.reservationContact !== '' && this.customerEmail !== '' && this.customerAddress !== '') {
+
+        const reservationData = {
+            name: this.selectedAmenity.name,
+            date: this.date,
+            customer_name: this.customerName,
+            contact: this.reservationContact,
+            email: this.customerEmail,
+            address: this.customerAddress,
+            
+        };
+
+        // Send reservation data to the backend
+        axios.post('/api/reserveAmenity', reservationData)
+
+            .then(response => {
+                console.log(response.data.message);
+                this.showModal = false;
+                // Additional logic if needed
+            })
+            .catch(error => {
+                console.error('Error creating reservation:', error);
+            });
+    } else {
+        console.error('Please fill in all fields.');
+    }
 },
 },
 };
