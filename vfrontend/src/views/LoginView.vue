@@ -1,32 +1,41 @@
 <template>
   <div class="container mt-5">
     <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="card">
+      <div class="col-md-6 text-center">
+        <div class="card row justify-content-center">
           <div class="card-body">
-            <h5 class="card-title text-center">Login</h5>
+            <!-- Welcome message and logo inside the login form -->
+            <h1 style="color: #139b0a; font-family: 'Arial', sans-serif;">Welcome</h1>
+            <img :src="require('@/assets/img/veronicalogo.png')" alt="tick" class="list-icon img-fluid mb-3" style="max-width: 100px; height: auto;">
 
-            <v-sheet width="300" class="mx-auto">
-              <v-form @submit.prevent="login">
+            <h5 class="card-title">Login</h5>
+
+            <v-sheet width="305" class="mx-auto">
+              <v-form @submit.prevent="login" class="text-left">
+                <!-- Alerts -->
                 <div v-if="message === 'error'" class="alert alert-danger">Invalid response</div>
                 <div v-if="message === 'fillUsername'" class="alert alert-warning">Fill in the username</div>
                 <div v-if="message === 'fillPassword'" class="alert alert-warning">Fill in the password</div>
                 <div v-if="message === 'fillBoth'" class="alert alert-warning">Fill in both username and password</div>
                 <div v-if="message === 'wrongCredentials'" class="alert alert-warning">Your username or password is incorrect</div>
 
-                <v-text-field v-model="username" label="Username"></v-text-field>
-                
+                <!-- Username field -->
+                <v-text-field v-model="username" label="Username" class="mb-3"></v-text-field>
+
                 <!-- Password field with checkbox to toggle visibility -->
                 <v-text-field
                   v-model="password"
                   :label="showPassword ? 'Password' : 'Password'"
                   :type="showPassword ? 'text' : 'password'"
+                  class="mb-3"
                 ></v-text-field>
 
-                <v-checkbox v-model="showPassword" label="Show Password"></v-checkbox>
+                <v-checkbox v-model="showPassword" label="Show Password" class="mb-3"></v-checkbox>
 
-                <v-btn type="submit" block class="mt-2 btn btn-dark">Submit</v-btn>
-                <router-link to="/register" class="d-block text-center mt-2">Register</router-link>
+                <!-- Submit button -->
+                <v-btn type="submit" block style="background-color: #ccc; color: #333;">Submit</v-btn>
+                <a href="/register" class="btn btn-link btn-lg d-block text-center" style="color: rgb(40, 39, 39);">Register</a>
+                <!-- Register Link -->
               </v-form>
             </v-sheet>
 
@@ -36,6 +45,7 @@
     </div>
   </div>
 </template>
+
 
 <script>
 import router from '@/router';
@@ -48,6 +58,7 @@ export default {
       password: '',
       message: null, // Change from array to null for better handling
       showPassword: false,
+      welcomeTextColor: '#1379ff', 
     };
   },
   methods: {
@@ -98,7 +109,48 @@ export default {
         console.error("Error:", error);
         // Handle error if needed
       }
+      
     },
   },
 };
 </script>
+
+<style>
+  .welcome-text {
+    color: #139b0a;
+    font-family: 'Arial', sans-serif;
+  }
+  @keyframes blinkText {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  
+  /* Apply the animation to the text */
+  .blinking-text {
+    animation: blinkText 2s ease-in-out infinite; /* Adjust duration and timing as needed */
+  }
+@media only screen and (max-width: 414px) {
+  .container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .col-md-6 {
+    width: 100%;
+  }
+  .card {
+    width: 100%;
+  }
+  .card-body {
+    padding: 20px;
+  }
+  .list-icon {
+    max-width: 80px; /* Adjust the size as needed */
+  }
+  .v-sheet {
+    width: 100%;
+
+  }
+  /* Adjust any other styles as needed for smaller screens */
+}
+</style>
