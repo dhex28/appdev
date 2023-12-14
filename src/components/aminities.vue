@@ -41,7 +41,7 @@
                         <tbody>
                             <tr>
                                 <td> <input type="text" :value="selectedAmenity.name" class="form-control" readonly>
-                      </td>
+                        </td>
                                 <td>
                                     <input type="date" v-model="date" class="form-control">
                                 </td>

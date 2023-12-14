@@ -10,7 +10,10 @@
           <div>
             <div class="brand-logo d-flex align-items-center justify-content-between">
               <a href="/admin" class="text-nowrap logo-img">
-                <img :src="require('@/assets/img/veronicalogo.png')" />
+                <a>
+  <img :src="require('@/assets/img/veronicalogo.png')" style="width: 100px; height: auto;" />
+</a>
+
               </a>
               <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                 <i class="ti ti-x fs-8"></i>
@@ -194,85 +197,80 @@
         <div class="container-fluid"></div>
 
         <!-- Appove table -->
-
         <v-container>
-          <v-card>
-            <v-card-title class="text-h5">Approved Room Bookings</v-card-title>
-        <v-data-table :headers="headers" :items="approvedBookings" :search="search" class="elevation-1">
-              <template v-for="(header, index) in headers" v-slot:[`header.${header.value}`]="{ props }">
-                <th :key="index">
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on }">
-                      <span v-on="on">{{ getHeaderTitle(header.value) }}</span>
-                    </template>
-                    <span>{{ header.text }}</span>
-                  </v-tooltip>
-                </th>
+    <v-card>
+      <v-card-title class="text-h5">Approved Room Bookings</v-card-title>
+      <v-data-table :headers="headers" :items="approvedBookings" :search="search" class="elevation-1">
+        <!-- Header tooltip and activator -->
+        <template v-for="(header, index) in headers" v-slot:[`header.${header.value}`]="{ props }">
+          <th :key="index">
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <span v-on="on">{{ getHeaderTitle(header.value) }}</span>
               </template>
+              <span>{{ header.text }}</span>
+            </v-tooltip>
+          </th>
+        </template>
+        <!-- Actions column -->
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-btn @click="denyBooking(item.id)" color="red" dark small>Deny</v-btn>
+        </template>
+        <!-- Data rows -->
+        <template v-slot:items="props">
+          <td class="align-center">{{ props.item.room_name }}</td>
+          <td class="align-center">{{ props.item.check_in_date }}</td>
+          <td class="align-center">{{ props.item.check_out_date }}</td>
+          <td class="align-center">{{ props.item.special_request }}</td>
+          <td class="align-center">{{ props.item.name }}</td>
+          <td class="align-center">{{ props.item.email }}</td>
+          <td class="align-center">{{ props.item.phone_number }}</td>
+          <td class="align-center">{{ props.item.address }}</td>
+          <td class="align-center">{{ props.item.status }}</td>
+        </template>
+      </v-data-table>
+    </v-card>
+  </v-container>
 
-           
-
-<template v-slot:[`item.actions`]="{ item }">
-
-<button @click="denyBooking(item.id)" class="btn btn-danger btn-sm">
-Deny
-</button>
-</template>
-
-              <template v-slot:items="props">
-                <td>{{ props.item.room_name }}</td>
-                <td>{{ props.item.check_in_date }}</td>
-                <td>{{ props.item.check_out_date }}</td>
-                <td>{{ props.item.special_request }}</td>
-                <td>{{ props.item.name }}</td>
-                <td>{{ props.item.email }}</td>
-                <td>{{ props.item.phone_number }}</td>
-                <td>{{ props.item.address }}</td>
-                <td>{{ props.item.status }}</td>
-              </template>
-            </v-data-table>
-          </v-card>
-        </v-container>
 
 
         <div class="container-fluid"></div>
 
         <!-- denied table -->
         <v-container>
-          <v-card>
-            <v-card-title class="text-h5">Denied Room Bookings</v-card-title>
-        <v-data-table :headers="headers" :items="declinedBookings" :search="search" class="elevation-1">
-              <template v-for="(header, index) in headers" v-slot:[`header.${header.value}`]="{ props }">
-                <th :key="index">
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on }">
-                      <span v-on="on">{{ getHeaderTitle(header.value) }}</span>
-                    </template>
-                    <span>{{ header.text }}</span>
-                  </v-tooltip>
-                </th>
+    <v-card>
+      <v-card-title class="text-h5">Denied Room Bookings</v-card-title>
+      <v-data-table :headers="headers" :items="declinedBookings" :search="search" class="elevation-1">
+        <!-- Header tooltip and activator -->
+        <template v-for="(header, index) in headers" v-slot:[`header.${header.value}`]="{ props }">
+          <th :key="index">
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <span v-on="on">{{ getHeaderTitle(header.value) }}</span>
               </template>
-
-              <template v-slot:[`item.actions`]="{ item }">
-            <button @click="approveBooking(item.id)" class="btn btn-success btn-sm ">
-              Approve
-            </button>
-          
-          </template>
-              <template v-slot:items="props">
-                <td>{{ props.item.room_name }}</td>
-                <td>{{ props.item.check_in_date }}</td>
-                <td>{{ props.item.check_out_date }}</td>
-                <td>{{ props.item.special_request }}</td>
-                <td>{{ props.item.name }}</td>
-                <td>{{ props.item.email }}</td>
-                <td>{{ props.item.phone_number }}</td>
-                <td>{{ props.item.address }}</td>
-                <td>{{ props.item.status }}</td>
-              </template>
-            </v-data-table>
-          </v-card>
-        </v-container>
+              <span>{{ header.text }}</span>
+            </v-tooltip>
+          </th>
+        </template>
+        <!-- Actions column -->
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-btn @click="approveBooking(item.id)" color="green" dark small>Approve</v-btn>
+        </template>
+        <!-- Data rows -->
+        <template v-slot:items="props">
+          <td class="align-center">{{ props.item.room_name }}</td>
+          <td class="align-center">{{ props.item.check_in_date }}</td>
+          <td class="align-center">{{ props.item.check_out_date }}</td>
+          <td class="align-center">{{ props.item.special_request }}</td>
+          <td class="align-center">{{ props.item.name }}</td>
+          <td class="align-center">{{ props.item.email }}</td>
+          <td class="align-center">{{ props.item.phone_number }}</td>
+          <td class="align-center">{{ props.item.address }}</td>
+          <td class="align-center">{{ props.item.status }}</td>
+        </template>
+      </v-data-table>
+    </v-card>
+  </v-container>
 
   </div>
   
@@ -421,5 +419,19 @@ async denyBooking(id) {
   button:hover {
     background-color: #45a049;
   }
+  .align-center {
+  text-align: center;
+}
+.align-center {
+  text-align: center;
+}
+
+.btn-success {
+  background-color: #4caf50;
+  color: white;
+}
+.btn-success:hover {
+  background-color: #45a049;
+}
   </style>
     
