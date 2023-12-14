@@ -10,7 +10,10 @@
           <div>
             <div class="brand-logo d-flex align-items-center justify-content-between">
               <a href="/admin" class="text-nowrap logo-img">
-                <img :src="require('@/assets/admin/images/logos/dark-logo.svg')" />
+                <a>
+  <img :src="require('@/assets/img/veronicalogo.png')" style="width: 200px; height: auto;" />
+</a>
+
               </a>
               <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                 <i class="ti ti-x fs-8"></i>
@@ -83,7 +86,6 @@
                     <span class="hide-menu">POS</span>
                   </a>
                 </li>
-
                 <li class="sidebar-item">
                   <a class="sidebar-link" href="/notification" aria-expanded="false">
                     <span>
@@ -132,91 +134,155 @@
             </nav>
           </header>
   
+      
+            
           <div class="container-fluid"></div>
-          <div class="color-container">
-            <categoriesinsert @refreshData="refreshData" />
-            <table border="1" class="table-container">
-  
-              <tr>
-                <th>Category Name</th>
-                
-              </tr>
-  
-              <tr v-for="category in categories" :key="category.category_id">
-                <td>{{ category.category_name }}</td>
-  
-              
-              </tr>
-            </table>
+        <div class="color-container">
+          <inventoryinsert @refreshData="refreshData" />
+          <insert @data-saved="getInfo" />
+          <table border="1" class="table-container">
+                  <tr>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Image</th>
+                    <th>Status</th>
+                    <th>Action</th>
+
+                  </tr>
+
+                <tbody>
+                  <tr v-for="product in info" :key="product.id">
+                    <td>{{ product.product_name }}</td>
+                    <td>{{ getCategoryName(product.category_id) }}</td>
+                    <td>{{ product.price }}</td>
+                    <td>{{ product.quantity }}</td>
+                    <td v-if="product.product_image">
+                      <img
+                        :src="product.product_image"
+                        style="max-width: 80px; max-height: 90px; "
+                        @error="handleImageError"
+                      />
+                    </td>
+                    <td>{{ product.status}}</td>
+                    <td>
+                      <button class="btn btn-outline-danger btn-sm" @click="editRecord(product.id)">Edit</button>
+                    </td>
+                    
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
-    </body>
-  </template>
+
+    <!-- Add a modal for displaying product history -->
+
+  </body>
+</template>
+
+
+<script>
+import axios from 'axios';
+import inventoryinsert from '@/components/inventoryinsert.vue';
+
+export default {
+  data() {
+    return {
+      info: [],
+      categories: [],
+
+    };
+    
+  },
+
+  components: {
+    inventoryinsert,
+  },
   
-  <script>
-  import axios from 'axios';
-  import categoriesinsert from '@/components/categoriesinsert.vue';
-  
-  export default {
-    data() {
-      return {
-        categories: [],
-      };
+  created() {
+    this.getData();
+    this.refreshData();
+  },
+  methods: {
+    async refreshData() {
+      try {
+        const response = await axios.get("getInventory");
+        this.info = response.data;
+
+        this.info.forEach(inf => {
+          console.log('Room Data:', inf);
+        });
+      } catch (error) {
+        console.error("Error fetching rooms:", error);
+      }
     },
-    components: {
-      categoriesinsert,
+    async getData() {
+      try {
+        await Promise.all([this.getCategories(), this.getInfo()]);
+      } catch (error) {
+        console.error(error);
+      }
     },
-    created() {
-      this.refreshData();
+    async getInfo() {
+      try {
+        const response = await axios.get('getInventory');
+        this.info = response.data;
+      } catch (error) {
+        console.log(error);
+      }
     },
-    methods: {
-      async refreshData() {
-        try {
-          const response = await axios.get("getCategory");
-          this.categories = response.data;
-  
-          this.categories.forEach(category => {
-            console.log('Category Data:', category);
-          });
-        } catch (error) {
-          console.error("Error fetching category:", error);
-        }
-      },
-     
+    async getCategories() {
+      try {
+        const response = await axios.get('getCategory');
+        this.categories = response.data;
+      } catch (error) {
+        console.log(error);
+      }
     },
-  };
-  </script>
-  
-  <style scoped>
-  .color-container {
-    background-color: #f2f2f2;
-    padding: 20px;
-  }
-  
-  .table-container {
-    margin-top: 20px;
-    border-collapse: collapse;
-    width: 100%;
-    background-color: #fff;
-  }
-  
-  button {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    padding: 3px 15px;
-    text-align: center;
-    text-decoration: none;
-    display: block;
-    margin: 0 auto;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-  
-  button:hover {
-    background-color: #45a049;
-  }
-  </style>
+    getCategoryName(categoryId) {
+      if (!Array.isArray(this.categories)) {
+        // Ensure that this.categories is an array
+        this.categories = [];
+      }
+
+      const category = this.categories.find(category => category.id === categoryId);
+      return category ? category.category_name : 'Unknown';
+    },
+  },
+};
+</script>
+<style scoped>
+.color-container {
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+.table-container {
+  margin-top: 20px;
+  border-collapse: collapse;
+  width: 100%;
+  background-color: #fff;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 3px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  margin: 0 auto;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+</style>
+
   

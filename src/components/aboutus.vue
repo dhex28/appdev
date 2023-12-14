@@ -127,6 +127,69 @@ export default {
 	
 	
 <style>
+
+.large-image-container {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    text-align: center; /* Center the image */
+}
+
+.large-image {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    display: inline-block;
+}
+.container {
+    width: 100%;
+    max-width: 1200px; /* Adjust the max-width according to your design */
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Header styles */
+.page-header-container {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.page-header {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.page-sub-header {
+    font-size: 1.2rem;
+    line-height: 1.5;
+}
+
+/* Upper section styles */
+.upper-section {
+    margin-top: 30px;
+}
+
+.right-title {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+/* Col layout styles */
+.col {
+    flex: 1;
+    padding: 0 15px;
+    margin-bottom: 20px;
+}
+
+/* Image styles */
+.large-image {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    display: block;
+    margin-bottom: 15px;
+}
+/* You can add additional styles for larger screens if needed */
 /* <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
 		<link rel="stylesheet" href="./assets/css/global-header.css">
 		<link rel="stylesheet" href="./assets/css/global-footer.css">
