@@ -17,6 +17,7 @@ import ProductsAdmin from '../views/ProductsAdmin.vue'
 import HistoryPage from '../views/HistoryPage.vue'
 import PosAdmin from '../views/PosAdmin.vue'
 import BookingRoomAdmin from '../views/BookingRoomAdmin.vue'
+import ReservationAmenities from '../views/ReservationAmenities.vue'
 
 
 // import Sidebar from '../views/Sidebar.vue'
@@ -119,6 +120,11 @@ const routes = [
 {
   path: '/bookingroom',
   component: BookingRoomAdmin,
+  meta: { requiresAdmin: true },
+},
+{
+  path: '/reservation',
+  component: ReservationAmenities,
   meta: { requiresAdmin: true },
 },
 {

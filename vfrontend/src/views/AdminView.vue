@@ -44,11 +44,11 @@
               </a>
               </li>
               <li class="sidebar-item">
-                <a class="sidebar-link" href="/bookingroom" aria-expanded="false">
+                <a class="sidebar-link" href="/reservation" aria-expanded="false">
                   <span>
                     <i class="fas fa-concierge-bell"></i>
                   </span>
-                  <span class="hide-menu">Reservation</span>
+                  <span class="hide-menu">Amenities Reservation</span>
                 </a>
               </li>
               <li class="sidebar-item">

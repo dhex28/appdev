@@ -43,6 +43,14 @@
                     <span class="hide-menu">Booking</span>
                 </a>
                 </li>
+                <li class="sidebar-item">
+                <a class="sidebar-link" href="/reservation" aria-expanded="false">
+                  <span>
+                    <i class="fas fa-concierge-bell"></i>
+                  </span>
+                  <span class="hide-menu">Amenities Reservation</span>
+                </a>
+              </li>
               <li class="sidebar-item">
                 <a class="sidebar-link" href="/addroom" aria-expanded="false">
                   <span>

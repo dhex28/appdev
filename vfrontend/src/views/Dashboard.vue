@@ -44,6 +44,14 @@
                 </a>
                 </li>
                 <li class="sidebar-item">
+                <a class="sidebar-link" href="/reservation" aria-expanded="false">
+                  <span>
+                    <i class="fas fa-concierge-bell"></i>
+                  </span>
+                  <span class="hide-menu">Amenities Reservation</span>
+                </a>
+              </li>
+                <li class="sidebar-item">
                   <a class="sidebar-link" href="/addroom" aria-expanded="false">
                     <span>
                       <i class="ti ti-article"></i>
@@ -132,21 +140,36 @@
     <!-- Dashboard Container on the Left Side -->
     <v-container>
       <v-row>
-        <v-col>
-          <v-card class="pa-3" color="primary">
-            <v-row>
-              <v-col>
-                <v-icon color="white">mdi-book-multiple</v-icon>
-              </v-col>
-              <v-col>
-                <div class="headline text-white">Total Bookings</div>
-                <div class="subtitle-1 text-white">{{ totalBookings }}</div>
-              </v-col>
+      <!-- Total Bookings -->
+      <v-col>
+        <v-card class="pa-3" color="primary">
+          <v-row>
+            <v-col>
+              <v-icon color="white">mdi-book-multiple</v-icon>
+            </v-col>
+            <v-col>
+              <div class="headline text-white">Total Bookings</div>
+              <div class="subtitle-1 text-white">{{ totalBookings }}</div>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
 
-            </v-row>
-          </v-card>
-        </v-col>
-      </v-row>
+      <!-- Total Amenities Reservation -->
+      <v-col>
+        <v-card class="pa-3" color="primary">
+          <v-row>
+            <v-col>
+              <v-icon color="white">mdi-book-multiple</v-icon>
+            </v-col>
+            <v-col>
+              <div class="headline text-white">Total Amenities Reservation</div>
+              <div class="subtitle-1 text-white">{{ totalReserve }}</div>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
     </v-container> 
 
     <div class="container-fluid"></div>
@@ -185,6 +208,48 @@
                 <td>{{ props.item.name }}</td>
                 <td>{{ props.item.email }}</td>
                 <td>{{ props.item.phone_number }}</td>
+                <td>{{ props.item.address }}</td>
+                <td>{{ props.item.status }}</td>
+              </template>
+            </v-data-table>
+          </v-card>
+        </v-container>
+
+        <div class="container-fluid"></div>
+
+
+        <v-container>
+          <v-card>
+             <v-card-title class="text-h5">Amenities Reservation</v-card-title>
+             <v-data-table :headers="headerss" :items="[...pendingReservation, ...approvedReservation]" :search="search" class="elevation-1">
+
+              <template v-for="(header, index) in headerss" v-slot:[`header.${header.value}`]="{ props }">
+                <th :key="index">
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                      <span v-on="on">{{ getHeaderTitles(header.value) }}</span>
+                    </template>
+                    <span>{{ header.text }}</span>
+                  </v-tooltip>
+                </th>
+              </template>
+
+
+              <template v-slot:[`item.actions`]="{ item }">
+            <button @click="approveReservation(item.id)" class="btn btn-success btn-sm mb-2">
+              Approve
+            </button>
+            <button @click="denyReservation(item.id)" class="btn btn-danger btn-sm">
+              Deny
+            </button>
+          </template>
+
+              <template v-slot:items="props">
+                <td>{{ props.item.name }}</td>
+                <td>{{ props.item.date }}</td>
+                <td>{{ props.item.customer_name }}</td>
+                <td>{{ props.item.email }}</td>
+                <td>{{ props.item.contact}}</td>
                 <td>{{ props.item.address }}</td>
                 <td>{{ props.item.status }}</td>
               </template>
@@ -248,6 +313,8 @@
   export default {
     data() {
       return {
+        pendingReservation: [],
+        approvedReservation: [],
           pendingBookings: [],
       approvedBookings: [],
       declinedBookings: [],
@@ -265,15 +332,29 @@
           { text: 'Status', value: 'status' },
           { text: 'Actions', value: 'actions', sortable: false },
         ],
+        headerss: [
+        { text: 'Amenities', value: 'name' },
+        { text: 'Date', value: 'date' },
+        { text: 'Name', value: 'customer_name' },
+        { text: 'Email', value: 'email' },
+        { text: 'Contact', value: 'contact' },
+        { text: 'Address', value: 'address' },
+        { text: 'Status', value: 'status' },
+        { text: 'Actions', value: 'actions', sortable: false },
+      ],
       };
     },
     computed: {
     totalBookings() {
       return this.pendingBookings.length + this.approvedBookings.length;
     },
+    totalReserve() {
+      return this.pendingReservation.length + this.approvedReservation.length;
+    },
   },
     mounted() {
       this.fetchBookingDetails();
+      this.fetchReservationDetails();
   
     },
     methods: {
@@ -283,6 +364,19 @@
       this.pendingBookings = response.data.filter(booking => booking.status === 'pending');
       this.approvedBookings = response.data.filter(booking => booking.status === 'approved');
       this.declinedBookings = response.data.filter(booking => booking.status === 'denied');
+    } catch (error) {
+      console.error("Error fetching booking details:", error);
+    }
+
+    
+  },
+
+  async fetchReservationDetails() {
+    try {
+      const response = await axios.get("/api/getReservationAmenities");
+      this.pendingReservation = response.data.filter(reservation_amenities => reservation_amenities.status === 'pending');
+      this.approvedReservation = response.data.filter(reservation_amenities => reservation_amenities.status === 'approved');
+      this.declinedReservation = response.data.filter(reservation_amenities => reservation_amenities.status === 'denied');
     } catch (error) {
       console.error("Error fetching booking details:", error);
     }
@@ -336,7 +430,51 @@
       console.error('Error updating booking status:', error);
     }
     this.fetchBookingDetails();
+  },
+  async approveReservation(id) {
+  try {
+    const response = await axios.post(`/api/updateReservationStatus/${id}`, { status: 'approved' });
+
+    if (response.status === 200 && response.data.message === 'Reservation status updated successfully') {
+      // Refresh Reservations after status update
+      this.fetchReservationDetails();
+    } else {
+      console.error('Error updating Reservation status:', response.data);
+    }
+  } catch (error) {
+    console.error('Error updating Reservation status:', error);
   }
+  this.fetchReservationDetails();
+},
+
+async denyReservation(id) {
+  try {
+    const response = await axios.post(`/api/updateReservationStatus/${id}`, { status: 'denied' });
+
+    if (response.status === 200 && response.data.message === 'Reservation status updated successfully') {
+      // Refresh Reservations after status update
+      this.fetchReservationDetails();
+    } else {
+      console.error('Error updating Reservation status:', response.data);
+    }
+  } catch (error) {
+    console.error('Error updating Reservation status:', error);
+  }
+  this.fetchReservationDetails();
+},
+getHeaderTitles(field) {
+      const headerTitles = {
+        name: 'Amenities',
+        date: 'Reserve Date',
+        customer_name: 'Name',
+        email: 'Email',
+        contact: 'Contact',
+        address: 'Address',
+        status: 'Status',
+        actions: 'Actions',
+      };
+      return headerTitles[field] || '';
+    },
     },
   };
   </script>

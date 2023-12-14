@@ -169,14 +169,14 @@
               label="Fixed Input Text"
               outlined
               @keydown.enter="handleEnterKey"
-              @keydown.ctrl.enter.prevent="handleSales"
+              @keydown.ctrl.enter.prevent="handleSales" 
             ></v-text-field>
           </v-col>
         </v-row>
       </v-container>
     </v-footer>
 
-    <v-dialog v-model="showProductModal" max-width="600" @click:outside="showProductModal = false">
+    <v-dialog v-model="showProductModal" max-width="600" @click:outside="showProductModal = true">
       <v-card>
         <v-card-title class="headline">
           Products List

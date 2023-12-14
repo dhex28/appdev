@@ -147,8 +147,8 @@
                 <v-icon color="white">mdi-book-multiple</v-icon>
               </v-col>
               <v-col>
-                <div class="headline text-white">Total Bookings</div>
-                <div class="subtitle-1 text-white">{{ bookingRooms.length }}</div>
+                <div class="headline text-white">Total Reservations</div>
+                <div class="subtitle-1 text-white">{{ ReservationRooms.length }}</div>
               </v-col>
             </v-row>
           </v-card>
@@ -161,8 +161,8 @@
 
     <v-container>
           <v-card>
-             <v-card-title class="text-h5">Pending Room Bookings</v-card-title>
-            <v-data-table :headers="headers" :items="pendingBookings" :search="search" class="elevation-1">
+             <v-card-title class="text-h5">Pending Amenities Reservation</v-card-title>
+            <v-data-table :headers="headers" :items="pendingReservation" :search="search" class="elevation-1">
               <template v-for="(header, index) in headers" v-slot:[`header.${header.value}`]="{ props }">
                 <th :key="index">
                   <v-tooltip bottom>
@@ -176,22 +176,20 @@
 
 
               <template v-slot:[`item.actions`]="{ item }">
-            <button @click="approveBooking(item.id)" class="btn btn-success btn-sm mb-2">
+            <button @click="approveReservation(item.id)" class="btn btn-success btn-sm mb-2">
               Approve
             </button>
-            <button @click="denyBooking(item.id)" class="btn-danger btn-danger btn-sm">
+            <button @click="denyReservation(item.id)" class="btn-danger btn-danger btn-sm">
               Deny
             </button>
           </template>
 
               <template v-slot:items="props">
-                <td>{{ props.item.room_name }}</td>
-                <td>{{ props.item.check_in_date }}</td>
-                <td>{{ props.item.check_out_date }}</td>
-                <td>{{ props.item.special_request }}</td>
                 <td>{{ props.item.name }}</td>
+                <td>{{ props.item.date }}</td>
+                <td>{{ props.item.customer_name }}</td>
                 <td>{{ props.item.email }}</td>
-                <td>{{ props.item.phone_number }}</td>
+                <td>{{ props.item.contact}}</td>
                 <td>{{ props.item.address }}</td>
                 <td>{{ props.item.status }}</td>
               </template>
@@ -205,8 +203,8 @@
 
         <v-container>
           <v-card>
-            <v-card-title class="text-h5">Approved Room Bookings</v-card-title>
-        <v-data-table :headers="headers" :items="approvedBookings" :search="search" class="elevation-1">
+            <v-card-title class="text-h5">Approved Amenities Reservation</v-card-title>
+        <v-data-table :headers="headers" :items="approvedReservations" :search="search" class="elevation-1">
               <template v-for="(header, index) in headers" v-slot:[`header.${header.value}`]="{ props }">
                 <th :key="index">
                   <v-tooltip bottom>
@@ -222,19 +220,17 @@
 
 <template v-slot:[`item.actions`]="{ item }">
 
-<button @click="denyBooking(item.id)" class="btn btn-danger btn-sm">
+<button @click="denyReservation(item.id)" class="btn btn-danger btn-sm">
 Deny
 </button>
 </template>
 
               <template v-slot:items="props">
-                <td>{{ props.item.room_name }}</td>
-                <td>{{ props.item.check_in_date }}</td>
-                <td>{{ props.item.check_out_date }}</td>
-                <td>{{ props.item.special_request }}</td>
                 <td>{{ props.item.name }}</td>
+                <td>{{ props.item.date }}</td>
+                <td>{{ props.item.customer_name }}</td>
                 <td>{{ props.item.email }}</td>
-                <td>{{ props.item.phone_number }}</td>
+                <td>{{ props.item.contact}}</td>
                 <td>{{ props.item.address }}</td>
                 <td>{{ props.item.status }}</td>
               </template>
@@ -248,8 +244,8 @@ Deny
         <!-- denied table -->
         <v-container>
           <v-card>
-            <v-card-title class="text-h5">Denied Room Bookings</v-card-title>
-        <v-data-table :headers="headers" :items="declinedBookings" :search="search" class="elevation-1">
+            <v-card-title class="text-h5">Denied Amenities Reservation</v-card-title>
+        <v-data-table :headers="headers" :items="declinedReservations" :search="search" class="elevation-1">
               <template v-for="(header, index) in headers" v-slot:[`header.${header.value}`]="{ props }">
                 <th :key="index">
                   <v-tooltip bottom>
@@ -262,19 +258,17 @@ Deny
               </template>
 
               <template v-slot:[`item.actions`]="{ item }">
-            <button @click="approveBooking(item.id)" class="btn btn-success btn-sm ">
+            <button @click="approveReservation(item.id)" class="btn btn-success btn-sm ">
               Approve
             </button>
           
           </template>
               <template v-slot:items="props">
-                <td>{{ props.item.room_name }}</td>
-                <td>{{ props.item.check_in_date }}</td>
-                <td>{{ props.item.check_out_date }}</td>
-                <td>{{ props.item.special_request }}</td>
                 <td>{{ props.item.name }}</td>
+                <td>{{ props.item.date }}</td>
+                <td>{{ props.item.customer_name }}</td>
                 <td>{{ props.item.email }}</td>
-                <td>{{ props.item.phone_number }}</td>
+                <td>{{ props.item.contact}}</td>
                 <td>{{ props.item.address }}</td>
                 <td>{{ props.item.status }}</td>
               </template>
@@ -297,19 +291,17 @@ import axios from 'axios';
 export default {
   data() {
     return {
-        pendingBookings: [],
-    approvedBookings: [],
-    declinedBookings: [],
-      bookingRooms: [],
+        pendingReservation: [],
+    approvedReservations: [],
+    declinedReservations: [],
+      ReservationAmenities: [],
       search: '',
       headers: [
-        { text: 'Room Name', value: 'room_name' },
-        { text: 'Check-in Date', value: 'check_in_date' },
-        { text: 'Check-out Date', value: 'check_out_date' },
-        { text: 'Special Request', value: 'special_request' },
-        { text: 'Name', value: 'name' },
+        { text: 'Amenities', value: 'name' },
+        { text: 'Date', value: 'date' },
+        { text: 'Name', value: 'customer_name' },
         { text: 'Email', value: 'email' },
-        { text: 'Phone Number', value: 'phone_number' },
+        { text: 'Contact', value: 'contact' },
         { text: 'Address', value: 'address' },
         { text: 'Status', value: 'status' },
         { text: 'Actions', value: 'actions', sortable: false },
@@ -317,29 +309,27 @@ export default {
     };
   },
   mounted() {
-    this.fetchBookingDetails();
+    this.fetchReservationDetails();
 
   },
   methods: {
-    async fetchBookingDetails() {
+    async fetchReservationDetails() {
   try {
-    const response = await axios.get("/api/getBookingroom");
-    this.pendingBookings = response.data.filter(booking => booking.status === 'pending');
-    this.approvedBookings = response.data.filter(booking => booking.status === 'approved');
-    this.declinedBookings = response.data.filter(booking => booking.status === 'denied');
+    const response = await axios.get("/api/getReservationAmenities");
+    this.pendingReservation = response.data.filter(reservation_amenities => reservation_amenities.status === 'pending');
+    this.approvedReservations = response.data.filter(reservation_amenities => reservation_amenities.status === 'approved');
+    this.declinedReservations = response.data.filter(reservation_amenities => reservation_amenities.status === 'denied');
   } catch (error) {
-    console.error("Error fetching booking details:", error);
+    console.error("Error fetching Reservation details:", error);
   }
 },
     getHeaderTitle(field) {
       const headerTitles = {
-        room_name: 'Room Name',
-        check_in_date: 'Check-in Date',
-        check_out_date: 'Check-out Date',
-        special_request: 'Special Request',
-        name: 'Name',
+        name: 'Amenities',
+        date: 'Reserve Date',
+        customer_name: 'Name',
         email: 'Email',
-        phone_number: 'Phone Number',
+        contact: 'Contact',
         address: 'Address',
         status: 'Status',
         actions: 'Actions',
@@ -350,36 +340,36 @@ export default {
 
    
 
-async approveBooking(id) {
+async approveReservation(id) {
   try {
-    const response = await axios.post(`/api/updateBookingStatus/${id}`, { status: 'approved' });
+    const response = await axios.post(`/api/updateReservationStatus/${id}`, { status: 'approved' });
 
-    if (response.status === 200 && response.data.message === 'Booking status updated successfully') {
-      // Refresh bookings after status update
-      this.fetchBookingDetails();
+    if (response.status === 200 && response.data.message === 'Reservation status updated successfully') {
+      // Refresh Reservations after status update
+      this.fetchReservationDetails();
     } else {
-      console.error('Error updating booking status:', response.data);
+      console.error('Error updating Reservation status:', response.data);
     }
   } catch (error) {
-    console.error('Error updating booking status:', error);
+    console.error('Error updating Reservation status:', error);
   }
-  this.fetchBookingDetails();
+  this.fetchReservationDetails();
 },
 
-async denyBooking(id) {
+async denyReservation(id) {
   try {
-    const response = await axios.post(`/api/updateBookingStatus/${id}`, { status: 'denied' });
+    const response = await axios.post(`/api/updateReservationStatus/${id}`, { status: 'denied' });
 
-    if (response.status === 200 && response.data.message === 'Booking status updated successfully') {
-      // Refresh bookings after status update
-      this.fetchBookingDetails();
+    if (response.status === 200 && response.data.message === 'Reservation status updated successfully') {
+      // Refresh Reservations after status update
+      this.fetchReservationDetails();
     } else {
-      console.error('Error updating booking status:', response.data);
+      console.error('Error updating Reservation status:', response.data);
     }
   } catch (error) {
-    console.error('Error updating booking status:', error);
+    console.error('Error updating Reservation status:', error);
   }
-  this.fetchBookingDetails();
+  this.fetchReservationDetails();
 }
   },
 };
